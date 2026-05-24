@@ -1,0 +1,14 @@
+version: "3"
+services:
+  mongo:
+    image: mongo:latest
+    container_name: expense-mongo
+    env_file:
+      - ./.env
+    volumes:
+      - expense-mongo:/data/db
+    ports:
+      - "6001:27017"
+
+volumes:
+  expense-mongo:

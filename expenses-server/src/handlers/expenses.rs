@@ -1,0 +1,100 @@
+use std::sync::Arc;
+
+use axum::{
+    extract::{Path, Query, State},
+    http::StatusCode,
+    response::IntoResponse,
+    Json,
+};
+
+use crate::{
+    error::MyError,
+    schema::{CreateExpenseSchema, FilterOptions},
+    AppState,
+};
+
+pub async fn expense_list_handler(
+    opts: Option<Query<FilterOptions>>,
+    State(app_state): State<Arc<AppState>>,
+) -> Result<impl IntoResponse, (StatusCode, Json<serde_json::Value>)> {
+    let Query(opts) = opts.unwrap_or_default();
+
+    let limit = opts.limit.unwrap_or(100) as i64;
+    let page = opts.page.unwrap_or(1) as i64;
+
+    match app_state
+        .db
+        .fetch_expenses(limit, page)
+        .await
+        .map_err(MyError::from)
+    {
+        Ok(res) => Ok(Json(res)),
+        Err(e) => Err(e.into()),
+    }
+}
+
+pub async fn create_expense_handler(
+    State(app_state): State<Arc<AppState>>,
+    Json(body): Json<CreateExpenseSchema>,
+) -> Result<impl IntoResponse, (StatusCode, Json<serde_json::Value>)> {
+    match app_state
+        .db
+        .create_expense(&body)
+        .await
+        .map_err(MyError::from)
+    {
+        Ok(res) => Ok((StatusCode::CREATED, Json(res))),
+        Err(e) => Err(e.into()),
+    }
+}
+
+pub async fn delete_expense_handler(
+    Path(id): Path<String>,
+    State(app_state): State<Arc<AppState>>,
+) -> Result<impl IntoResponse, (StatusCode, Json<serde_json::Value>)> {
+    match app_state
+        .db
+        .delete_expense(&id)
+        .await
+        .map_err(MyError::from)
+    {
+        Ok(res) => Ok(Json(res)),
+        Err(e) => Err(e.into()),
+    }
+}
+
+// pub async fn get_note_handler(
+//     Path(id): Path<String>,
+//     State(app_state): State<Arc<AppState>>,
+// ) -> Result<impl IntoResponse, (StatusCode, Json<serde_json::Value>)> {
+//     match app_state.db.get_note(&id).await.map_err(MyError::from) {
+//         Ok(res) => Ok(Json(res)),
+//         Err(e) => Err(e.into()),
+//     }
+// }
+
+// pub async fn edit_note_handler(
+//     Path(id): Path<String>,
+//     State(app_state): State<Arc<AppState>>,
+//     Json(body): Json<UpdateNoteSchema>,
+// ) -> Result<impl IntoResponse, (StatusCode, Json<serde_json::Value>)> {
+//     match app_state
+//         .db
+//         .edit_note(&id, &body)
+//         .await
+//         .map_err(MyError::from)
+//     {
+//         Ok(res) => Ok(Json(res)),
+//         Err(e) => Err(e.into()),
+//     }
+// }
+
+// pub async fn delete_note_handler(
+//     Path(id): Path<String>,
+//     State(app_state): State<Arc<AppState>>,
+// ) -> Result<impl IntoResponse, (StatusCode, Json<serde_json::Value>)> {
+//     match app_state.db.delete_note(&id).await.map_err(MyError::from) {
+//         Ok(_) => Ok(StatusCode::NO_CONTENT),
+//         Err(e) => Err(e.into()),
+//     }
+// }

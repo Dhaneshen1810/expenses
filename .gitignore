@@ -1,0 +1,22 @@
+# App (Next.js)
+expenses-app/node_modules/
+expenses-app/.next/
+expenses-app/out/
+expenses-app/build/
+expenses-app/npm-debug.log*
+expenses-app/yarn-debug.log*
+expenses-app/yarn-error.log*
+expenses-app/.pnpm-debug.log*
+expenses-app/.env*
+expenses-app/.vercel
+expenses-app/*.tsbuildinfo
+expenses-app/next-env.d.ts
+
+# Server (Rust)
+expenses-server/target/
+expenses-server/.env
+
+# OS / editor
+.DS_Store
+.idea/
+.vscode/
