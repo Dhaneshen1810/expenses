@@ -4,6 +4,7 @@ import { useCallback, useEffect, useState } from "react";
 import { Wallet, X } from "lucide-react";
 import { AddExpenseDialog } from "@/components/add-expense-dialog";
 import { AppShell } from "@/components/app-shell";
+import { useAuth } from "@/components/auth-provider";
 import {
   AlertDialog,
   AlertDialogCancel,
@@ -87,6 +88,7 @@ function formatExpenseDateMdY(raw: string | undefined): string {
 
 export function ExpensesView() {
   const { toast } = useToast();
+  const { authFetch, status } = useAuth();
   const [expenses, setExpenses] = useState<Expense[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -97,7 +99,7 @@ export function ExpensesView() {
     setLoading(true);
     setError(null);
     try {
-      const res = await fetch("/api/expenses", { cache: "no-store" });
+      const res = await authFetch("/api/expenses", { cache: "no-store" });
       const data: unknown = await res.json();
       if (!res.ok) {
         const msg =
@@ -117,18 +119,20 @@ export function ExpensesView() {
     } finally {
       setLoading(false);
     }
-  }, []);
+  }, [authFetch]);
 
   useEffect(() => {
-    void load();
-  }, [load]);
+    if (status === "authenticated") {
+      void load();
+    }
+  }, [load, status]);
 
   async function confirmDeleteExpense() {
     if (!expenseToDelete) return;
     const id = expenseToDelete.id;
     setDeleteSubmitting(true);
     try {
-      const res = await fetch(
+      const res = await authFetch(
         `/api/expenses/${encodeURIComponent(id)}`,
         { method: "DELETE" }
       );

@@ -12,15 +12,19 @@ function serverBaseUrl(): string | undefined {
  * GET /api/expenses — proxies to `${SERVER_URL|NEXT_PUBLIC_SERVER_URL}/api/expenses` when set.
  * Without either, returns [] so the UI can load during local setup.
  */
-export async function GET() {
+export async function GET(request: Request) {
   const base = serverBaseUrl();
+  const authorization = request.headers.get("authorization");
   if (!base) {
     return NextResponse.json([]);
   }
 
   try {
     const res = await fetch(`${base}/api/expenses`, {
-      headers: { Accept: "application/json" },
+      headers: {
+        Accept: "application/json",
+        ...(authorization ? { Authorization: authorization } : {}),
+      },
       cache: "no-store",
     });
 
@@ -57,6 +61,7 @@ export async function GET() {
  */
 export async function POST(request: Request) {
   const base = serverBaseUrl();
+  const authorization = request.headers.get("authorization");
   if (!base) {
     return NextResponse.json(
       { error: "Server URL is not configured (SERVER_URL or NEXT_PUBLIC_SERVER_URL)" },
@@ -77,6 +82,7 @@ export async function POST(request: Request) {
       headers: {
         Accept: "application/json",
         "Content-Type": "application/json",
+        ...(authorization ? { Authorization: authorization } : {}),
       },
       body: JSON.stringify(body),
       cache: "no-store",

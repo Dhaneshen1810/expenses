@@ -2,6 +2,7 @@
 
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { AppShell } from "@/components/app-shell";
+import { useAuth } from "@/components/auth-provider";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
 import { Spinner } from "@/components/ui/spinner";
@@ -24,6 +25,7 @@ function isRecord(v: unknown): v is Record<string, unknown> {
 }
 
 export function AnalyticsView() {
+  const { authFetch, status } = useAuth();
   const [expenses, setExpenses] = useState<Expense[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -32,7 +34,7 @@ export function AnalyticsView() {
     setLoading(true);
     setError(null);
     try {
-      const res = await fetch("/api/expenses", { cache: "no-store" });
+      const res = await authFetch("/api/expenses", { cache: "no-store" });
       const data: unknown = await res.json();
       if (!res.ok) {
         const msg =
@@ -50,11 +52,13 @@ export function AnalyticsView() {
     } finally {
       setLoading(false);
     }
-  }, []);
+  }, [authFetch]);
 
   useEffect(() => {
-    void load();
-  }, [load]);
+    if (status === "authenticated") {
+      void load();
+    }
+  }, [load, status]);
 
   const monthExpenses = useMemo(
     () => filterExpensesInCurrentMonth(expenses),

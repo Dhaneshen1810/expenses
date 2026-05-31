@@ -15,6 +15,7 @@ type RouteParams = { params: Promise<{ id: string }> };
  */
 export async function DELETE(_request: Request, context: RouteParams) {
   const base = serverBaseUrl();
+  const authorization = _request.headers.get("authorization");
   if (!base) {
     return NextResponse.json(
       { error: "Server URL is not configured (SERVER_URL or NEXT_PUBLIC_SERVER_URL)" },
@@ -29,7 +30,10 @@ export async function DELETE(_request: Request, context: RouteParams) {
   try {
     const res = await fetch(url, {
       method: "DELETE",
-      headers: { Accept: "application/json" },
+      headers: {
+        Accept: "application/json",
+        ...(authorization ? { Authorization: authorization } : {}),
+      },
       cache: "no-store",
     });
 

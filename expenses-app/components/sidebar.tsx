@@ -2,7 +2,9 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { BarChart3, Wallet, X } from "lucide-react";
+import { BarChart3, LogOut, Wallet, X } from "lucide-react";
+import { useAuth } from "@/components/auth-provider";
+import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 
 const navItems = [
@@ -27,6 +29,7 @@ interface SidebarProps {
 
 export function Sidebar({ isOpen, onClose }: SidebarProps) {
   const pathname = usePathname();
+  const { logout } = useAuth();
 
   return (
     <>
@@ -89,6 +92,18 @@ export function Sidebar({ isOpen, onClose }: SidebarProps) {
             );
           })}
         </nav>
+
+        <div className="absolute bottom-6 left-6 right-6">
+          <Button
+            type="button"
+            variant="ghost"
+            className="w-full justify-start text-muted-foreground"
+            onClick={logout}
+          >
+            <LogOut className="size-4" />
+            Sign out
+          </Button>
+        </div>
       </aside>
     </>
   );

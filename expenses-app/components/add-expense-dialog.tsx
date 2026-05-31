@@ -2,6 +2,7 @@
 
 import { useCallback, useEffect, useState } from "react";
 import { Plus } from "lucide-react";
+import { useAuth } from "@/components/auth-provider";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -60,6 +61,7 @@ interface AddExpenseDialogProps {
 
 export function AddExpenseDialog({ onCreated }: AddExpenseDialogProps) {
   const { toast } = useToast();
+  const { authFetch } = useAuth();
   const [open, setOpen] = useState(false);
   const [title, setTitle] = useState("");
   const [amount, setAmount] = useState("");
@@ -115,7 +117,7 @@ export function AddExpenseDialog({ onCreated }: AddExpenseDialogProps) {
 
     setSubmitting(true);
     try {
-      const res = await fetch("/api/expenses", {
+      const res = await authFetch("/api/expenses", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
