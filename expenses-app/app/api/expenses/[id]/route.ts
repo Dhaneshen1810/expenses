@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { cookies } from "next/headers";
 
 export const dynamic = "force-dynamic";
 
@@ -15,7 +16,7 @@ type RouteParams = { params: Promise<{ id: string }> };
  */
 export async function DELETE(_request: Request, context: RouteParams) {
   const base = serverBaseUrl();
-  const authorization = _request.headers.get("authorization");
+  const authorization = await authorizationHeader(_request);
   if (!base) {
     return NextResponse.json(
       { error: "Server URL is not configured (SERVER_URL or NEXT_PUBLIC_SERVER_URL)" },
@@ -65,4 +66,9 @@ export async function DELETE(_request: Request, context: RouteParams) {
     const message = e instanceof Error ? e.message : "Unknown error";
     return NextResponse.json({ error: message }, { status: 502 });
   }
+}
+
+async function authorizationHeader(request: Request): Promise<string | null> {
+  const accessToken = (await cookies()).get("access_token")?.value;
+  return request.headers.get("authorization") ?? (accessToken ? `Bearer ${accessToken}` : null);
 }

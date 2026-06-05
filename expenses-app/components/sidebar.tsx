@@ -98,7 +98,7 @@ export function Sidebar({ isOpen, onClose }: SidebarProps) {
             type="button"
             variant="ghost"
             className="w-full justify-start text-muted-foreground"
-            onClick={logout}
+            onClick={() => void logout()}
           >
             <LogOut className="size-4" />
             Sign out

@@ -1,13 +1,23 @@
 import { NextResponse } from "next/server";
+import { cookies } from "next/headers";
 
 export const dynamic = "force-dynamic";
 
-function authServerBaseUrl(): string {
-  return (process.env.AUTH_SERVER_URL ?? "http://localhost:8080").replace(/\/$/, "");
+function expensesServerBaseUrl(): string {
+  return (
+    process.env.SERVER_URL ??
+    process.env.NEXT_PUBLIC_SERVER_URL ??
+    "http://localhost:8000"
+  ).replace(/\/$/, "");
 }
 
 export async function GET(request: Request) {
-  const authorization = request.headers.get("authorization");
+  const cookieStore = await cookies();
+  const accessToken = cookieStore.get("access_token")?.value;
+  const authorization =
+    request.headers.get("authorization") ??
+    (accessToken ? `Bearer ${accessToken}` : null);
+
   if (!authorization) {
     return NextResponse.json(
       { error: "Missing Authorization bearer token" },
@@ -16,7 +26,7 @@ export async function GET(request: Request) {
   }
 
   try {
-    const res = await fetch(`${authServerBaseUrl()}/me`, {
+    const res = await fetch(`${expensesServerBaseUrl()}/api/session`, {
       headers: {
         Accept: "application/json",
         Authorization: authorization,
