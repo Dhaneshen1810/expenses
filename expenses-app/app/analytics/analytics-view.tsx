@@ -75,7 +75,7 @@ export function AnalyticsView() {
           </h1>
           <p className="mt-1 text-sm text-muted-foreground">
             This month&apos;s spending by category vs. your limits (amounts in
-            USD).
+            CAD).
           </p>
         </div>
 
@@ -109,11 +109,11 @@ export function AnalyticsView() {
                     <dl className="grid grid-cols-2 gap-x-4 gap-y-2 text-sm">
                       <dt className="text-muted-foreground">Spent</dt>
                       <dd className="text-right font-medium tabular-nums text-foreground">
-                        {formatCentsAsCurrency(spent, "USD")}
+                        {formatCentsAsCurrency(spent, "CAD")}
                       </dd>
                       <dt className="text-muted-foreground">Limit</dt>
                       <dd className="text-right tabular-nums text-muted-foreground">
-                        {formatCentsAsCurrency(limit, "USD")}
+                        {formatCentsAsCurrency(limit, "CAD")}
                       </dd>
                       <dt className="text-muted-foreground">
                         {remaining >= 0 ? "Remaining" : "Over limit"}
@@ -126,7 +126,7 @@ export function AnalyticsView() {
                             : "text-destructive"
                         )}
                       >
-                        {formatCentsAsCurrency(Math.abs(remaining), "USD")}
+                        {formatCentsAsCurrency(Math.abs(remaining), "CAD")}
                         {remaining < 0 ? (
                           <span className="ml-1 text-xs font-normal text-muted-foreground">
                             over

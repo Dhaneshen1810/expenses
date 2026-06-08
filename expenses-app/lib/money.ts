@@ -9,7 +9,7 @@ export function centsToDollars(cents: number): number {
   return cents / CENTS_PER_DOLLAR;
 }
 
-/** Format cents as a currency amount (major units). Defaults to USD when `currency` is omitted. */
+/** Format cents as a currency amount (major units). Defaults to CAD when `currency` is omitted. */
 export function formatCentsAsCurrency(
   cents: number,
   currencyCode: string | undefined
@@ -17,7 +17,7 @@ export function formatCentsAsCurrency(
   const code =
     typeof currencyCode === "string" && currencyCode.length > 0
       ? currencyCode
-      : "USD";
+      : "CAD";
   const major = centsToDollars(cents);
   try {
     return new Intl.NumberFormat(undefined, {
