@@ -43,8 +43,8 @@ export function Sidebar({ isOpen, onClose }: SidebarProps) {
 
       <aside
         className={cn(
-          "fixed left-0 top-0 z-50 h-full w-64 border-r border-border bg-card p-6 transition-transform duration-300 ease-in-out",
-          "md:w-56 md:translate-x-0",
+          "fixed left-0 top-0 z-50 h-full w-64 border-r border-border bg-card px-6 pb-6 pt-[calc(1.5rem+env(safe-area-inset-top))] transition-transform duration-300 ease-in-out",
+          "md:w-56 md:translate-x-0 md:pt-6",
           isOpen ? "translate-x-0" : "-translate-x-full"
         )}
       >

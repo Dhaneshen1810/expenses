@@ -37,7 +37,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
       <Sidebar isOpen={sidebarOpen} onClose={() => setSidebarOpen(false)} />
 
       <main className="md:pl-56">
-        <div className="mx-auto max-w-2xl px-4 py-6 md:px-8 md:py-12">
+        <div className="mx-auto max-w-2xl px-4 pb-6 pt-[calc(1.5rem+env(safe-area-inset-top))] md:px-8 md:py-12">
           <div className="mb-6 flex items-center gap-4 md:hidden">
             <button
               type="button"
