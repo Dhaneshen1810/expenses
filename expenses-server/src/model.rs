@@ -35,6 +35,7 @@ pub enum ExpenseCategory {
     LifeInsurance,
     PetInsurance,
     DisabilityInsurance,
+    PropertyTax,
     DhanMisc,
     NidhiMisc,
 }

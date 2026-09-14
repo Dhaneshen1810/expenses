@@ -18,4 +18,5 @@ export const CATEGORY_BUDGET_CENTS: Record<ExpenseCategory, number> = {
   [ExpenseCategory.LifeInsurance]: 220 * 100,
   [ExpenseCategory.PetInsurance]: 115 * 100,
   [ExpenseCategory.DisabilityInsurance]: 156 * 100,
+  [ExpenseCategory.PropertyTax]: 951 * 100,
 };

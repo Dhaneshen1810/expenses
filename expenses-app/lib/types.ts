@@ -14,6 +14,7 @@ export enum ExpenseCategory {
   LifeInsurance = "LifeInsurance",
   PetInsurance = "PetInsurance",
   DisabilityInsurance = "DisabilityInsurance",
+  PropertyTax = "PropertyTax",
   DhanMisc = "DhanMisc",
   NidhiMisc = "NidhiMisc",
 }
@@ -35,6 +36,7 @@ export const EXPENSE_CATEGORY_LABELS: Record<ExpenseCategory, string> = {
   [ExpenseCategory.LifeInsurance]: "life_insurance",
   [ExpenseCategory.PetInsurance]: "Pet_insurance",
   [ExpenseCategory.DisabilityInsurance]: "Disability_insurance",
+  [ExpenseCategory.PropertyTax]: "Property tax",
   [ExpenseCategory.DhanMisc]: "Dhan misc",
   [ExpenseCategory.NidhiMisc]: "Nidhi misc",
 };
