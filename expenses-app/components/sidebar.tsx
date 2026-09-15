@@ -2,7 +2,14 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { BarChart3, CreditCard, LogOut, Wallet, X } from "lucide-react";
+import {
+  BarChart3,
+  CreditCard,
+  Gauge,
+  LogOut,
+  Wallet,
+  X,
+} from "lucide-react";
 import { useAuth } from "@/components/auth-provider";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
@@ -25,6 +32,12 @@ const navItems = [
     label: "Card usage",
     icon: CreditCard,
     color: "text-[oklch(0.72_0.14_55)]",
+  },
+  {
+    href: "/usage",
+    label: "Usage",
+    icon: Gauge,
+    color: "text-[oklch(0.72_0.14_310)]",
   },
 ] as const;
 
